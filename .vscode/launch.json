@@ -1,7 +1,4 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
@@ -12,10 +9,9 @@
                 "args": [
                     "test",
                     "--no-run",
-                    // replace `01` here with the solution you like to debug.
                     "--bin=01",
                     "--package=advent_of_code"
-                ],
+                ]
             },
             "args": [],
             "cwd": "${workspaceFolder}"
@@ -30,7 +26,7 @@
                     // replace `01` here with the solution you like to debug.
                     "--bin=01",
                     "--package=advent_of_code"
-                ],
+                ]
             },
             "cwd": "${workspaceFolder}"
         },
