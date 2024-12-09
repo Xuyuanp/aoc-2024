@@ -3,6 +3,7 @@ use std::iter::zip;
 advent_of_code::solution!(2);
 
 fn is_safe(levels: &[u32]) -> bool {
+    let allowed = [1, 2, 3];
     let mut prev_diff: Option<i32> = None;
     let iter1 = levels.iter();
     let mut iter2 = levels.iter();
@@ -15,7 +16,7 @@ fn is_safe(levels: &[u32]) -> bool {
             }
         }
         let abs_diff = diff.abs();
-        if !(1..=3).contains(&abs_diff) {
+        if !allowed.contains(&abs_diff) {
             return false;
         }
         prev_diff = Some(diff);
@@ -36,8 +37,29 @@ pub fn part_one(input: &str) -> Option<u32> {
     Some(res)
 }
 
-pub fn part_two(_input: &str) -> Option<u32> {
-    None
+pub fn part_two(input: &str) -> Option<u32> {
+    let res = input
+        .lines()
+        .map(|line| {
+            line.split_whitespace()
+                .map(|word| word.parse::<u32>().unwrap())
+                .collect::<Vec<_>>()
+        })
+        .filter(|levels| {
+            if is_safe(levels) {
+                return true;
+            }
+            for i in 0..levels.len() {
+                let mut levels = levels.clone();
+                levels.remove(i);
+                if is_safe(&levels) {
+                    return true;
+                }
+            }
+            false
+        })
+        .count() as u32;
+    Some(res)
 }
 
 #[cfg(test)]
@@ -53,6 +75,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+        assert_eq!(result, Some(4));
     }
 }
