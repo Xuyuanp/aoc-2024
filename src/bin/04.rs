@@ -62,7 +62,32 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    None
+    let matrix = input
+        .lines()
+        .map(|line| line.bytes().collect::<Vec<_>>())
+        .collect::<Vec<_>>();
+
+    let mut res = 0;
+    for i in 1..matrix.len() - 1 {
+        for j in 1..matrix[i].len() - 1 {
+            if matrix[i][j] != b'A' {
+                continue;
+            }
+            match (
+                matrix[i - 1][j - 1],
+                matrix[i + 1][j + 1],
+                matrix[i - 1][j + 1],
+                matrix[i + 1][j - 1],
+            ) {
+                (b'M', b'S', b'M', b'S') => res += 1,
+                (b'M', b'S', b'S', b'M') => res += 1,
+                (b'S', b'M', b'M', b'S') => res += 1,
+                (b'S', b'M', b'S', b'M') => res += 1,
+                _ => (),
+            }
+        }
+    }
+    Some(res)
 }
 
 #[cfg(test)]
@@ -77,7 +102,9 @@ mod tests {
 
     #[test]
     fn test_part_two() {
-        let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+        let result = part_two(&advent_of_code::template::read_file_part(
+            "examples", DAY, 2,
+        ));
+        assert_eq!(result, Some(9));
     }
 }
